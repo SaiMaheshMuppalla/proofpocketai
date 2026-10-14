@@ -1,0 +1,4 @@
+# Root requirements.txt for Vercel Python Functions.
+# Vercel looks for this file at the repository root when building Python functions.
+# It includes the actual dependencies from the backend/ directory.
+-r backend/requirements.txt

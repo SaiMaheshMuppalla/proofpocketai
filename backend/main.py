@@ -41,6 +41,7 @@ app.add_middleware(
 # ── Routes ──────────────────────────────────────────────────────
 
 @app.get("/", tags=["root"])
+@app.get("/api", tags=["root"])
 def root():
     """Friendly root endpoint — confirms the API is alive."""
     return {
@@ -51,6 +52,7 @@ def root():
 
 
 @app.get("/health", tags=["root"])
+@app.get("/api/health", tags=["root"])
 def health():
     """Health check — used by the frontend and load balancers."""
     return {
@@ -63,6 +65,7 @@ def health():
 # ── Phase placeholders (will be implemented in later phases) ────
 
 @app.get("/api/v1/documents", tags=["documents"])
+@app.get("/v1/documents", tags=["documents"])
 def list_documents_placeholder():
     """
     Phase 3: Returns all documents for the authenticated user.
@@ -72,6 +75,7 @@ def list_documents_placeholder():
 
 
 @app.post("/api/v1/documents/upload", tags=["documents"])
+@app.post("/v1/documents/upload", tags=["documents"])
 def upload_document_placeholder():
     """
     Phase 3: Accepts a file upload, stores it in Supabase Storage,
@@ -81,6 +85,7 @@ def upload_document_placeholder():
 
 
 @app.get("/api/v1/extract/{document_id}", tags=["ai"])
+@app.get("/v1/extract/{document_id}", tags=["ai"])
 def extract_placeholder(document_id: str):
     """
     Phase 4: Sends the document image to Gemini API and returns

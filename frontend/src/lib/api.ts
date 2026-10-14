@@ -2,11 +2,21 @@
  * ProofPocket AI — Backend API Client
  *
  * Connects the React frontend to the FastAPI backend service.
- * In local dev: defaults to http://localhost:8000.
- * In production: configured via VITE_API_URL environment variable.
+ * In local dev: defaults to http://localhost:8000 (configurable via VITE_API_BASE_URL or VITE_API_URL).
+ * In production: defaults to same-origin ("") so requests hit the same Vercel deployment domain.
  */
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/+$/, '')
+const getApiBaseUrl = (): string => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL
+  if (envUrl !== undefined && envUrl !== '') {
+    return envUrl.replace(/\/+$/, '')
+  }
+  // In development: fallback to localhost FastAPI port
+  // In production: fallback to same-origin ("")
+  return import.meta.env.DEV ? 'http://localhost:8000' : ''
+}
+
+const API_BASE_URL = getApiBaseUrl()
 
 export interface HealthCheckResponse {
   status: string
