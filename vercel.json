@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
+  "buildCommand": "node -e \"const { execSync } = require('child_process'), fs = require('fs'); if (fs.existsSync('frontend')) { execSync('cd frontend && npm install && npm run build && cd .. && cp -r frontend/dist ./dist', { stdio: 'inherit' }); } else { execSync('npm run build', { stdio: 'inherit' }); }\"",
+  "outputDirectory": "dist",
   "functions": {
     "api/index.py": {
       "includeFiles": "backend/**"
