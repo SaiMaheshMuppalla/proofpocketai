@@ -1,0 +1,24 @@
+# ─── Python & environment ─────────────────────────────────────
+.env
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# ─── Node / Vite ──────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# ─── macOS ────────────────────────────────────────────────────
+.DS_Store
+
+# ─── IDE ──────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
