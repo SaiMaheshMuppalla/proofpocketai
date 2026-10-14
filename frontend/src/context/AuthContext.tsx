@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { User, Session, AuthError } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 interface AuthContextType {
   user: User | null
@@ -60,6 +60,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      return {
+        error: new Error(
+          'Supabase environment variables (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY) are missing in this deployment. Please set them in your hosting provider settings.'
+        ),
+      }
+    }
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
@@ -72,6 +79,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signUp = async (email: string, password: string, fullName?: string) => {
+    if (!isSupabaseConfigured) {
+      return {
+        error: new Error(
+          'Supabase environment variables (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY) are missing in this deployment. Please set them in your hosting provider settings.'
+        ),
+        user: null,
+        session: null,
+      }
+    }
     try {
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),

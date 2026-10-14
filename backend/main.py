@@ -16,14 +16,22 @@ app = FastAPI(
 )
 
 # ── CORS ────────────────────────────────────────────────────────
-# Allows the React dev server (localhost:5173) to talk to this API.
-# In production you will restrict this to your real domain.
+# In local dev: allows Vite dev server (localhost:5173).
+# In production: supports CORS_ORIGINS environment variable + Vercel/Netlify domains.
+raw_origins = os.getenv("CORS_ORIGINS", "")
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+if raw_origins:
+    allowed_origins.extend([origin.strip() for origin in raw_origins.split(",") if origin.strip()])
+
+cors_origin_regex = os.getenv("CORS_ORIGIN_REGEX", r"https://.*(\.vercel\.app|\.netlify\.app)")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",   # Vite dev server
-        "http://localhost:3000",   # Optional: CRA
-    ],
+    allow_origins=allowed_origins,
+    allow_origin_regex=cors_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

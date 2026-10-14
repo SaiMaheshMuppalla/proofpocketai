@@ -13,10 +13,10 @@ export const isSupabaseConfigured = Boolean(
   !supabaseAnonKey.includes('your-publishable-anon-key')
 )
 
-if (!isSupabaseConfigured && import.meta.env.DEV) {
-  console.info(
-    'ProofPocket AI: Supabase environment variables are pending. ' +
-    'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in frontend/.env.local to enable live database connectivity.'
+if (!isSupabaseConfigured) {
+  console.warn(
+    '[ProofPocket AI] Supabase credentials are not configured. ' +
+    'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment to enable authentication and live database connectivity.'
   )
 }
 
