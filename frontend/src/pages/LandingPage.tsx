@@ -1,422 +1,563 @@
 import { useNavigate } from 'react-router-dom'
 import {
-  Shield, Search, Brain, Bell, FileText,
-  Upload, Star, CheckCircle, ArrowRight,
-  Zap, Lock, BarChart3,
+  ShieldCheck,
+  Clock,
+  ArrowRight,
+  Lock,
+  Calendar,
 } from 'lucide-react'
 
-// ─── Hero Section ──────────────────────────────────────────────
-function Hero() {
+export default function LandingPage() {
   const navigate = useNavigate()
+
   return (
-    <section id="hero" style={{
-      minHeight: '100vh',
-      display:   'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      padding: '6rem 1.5rem 4rem',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* Background orbs */}
-      <div style={{
-        position:'absolute', top:'15%', left:'10%',
-        width:'400px', height:'400px', borderRadius:'50%',
-        background:'radial-gradient(circle, rgba(108,99,255,0.18) 0%, transparent 70%)',
-        filter:'blur(40px)',
-        animation:'float 8s ease-in-out infinite',
-      }} />
-      <div style={{
-        position:'absolute', bottom:'20%', right:'8%',
-        width:'320px', height:'320px', borderRadius:'50%',
-        background:'radial-gradient(circle, rgba(167,139,250,0.14) 0%, transparent 70%)',
-        filter:'blur(40px)',
-        animation:'float 11s ease-in-out infinite reverse',
-      }} />
-      <div style={{
-        position:'absolute', top:'50%', left:'50%',
-        transform:'translate(-50%,-50%)',
-        width:'600px', height:'600px', borderRadius:'50%',
-        background:'radial-gradient(circle, rgba(34,211,161,0.05) 0%, transparent 65%)',
-        filter:'blur(60px)',
-        pointerEvents:'none',
-      }} />
-
-      {/* Badge */}
-      <div className="animate-slide-up" style={{
-        display:'inline-flex', alignItems:'center', gap:'0.5rem',
-        background:'rgba(108,99,255,0.12)', border:'1px solid rgba(108,99,255,0.35)',
-        borderRadius:'999px', padding:'0.4rem 1rem', marginBottom:'1.5rem',
-        fontSize:'0.82rem', fontWeight:600, color:'var(--color-accent2)',
-      }}>
-        <Zap size={13} />
-        AI-Powered Purchase Document Wallet
-      </div>
-
-      {/* Headline */}
-      <h1 className="animate-slide-up" style={{
-        fontFamily:'var(--font-display)',
-        fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-        fontWeight: 800,
-        lineHeight: 1.1,
-        letterSpacing: '-0.03em',
-        maxWidth: '900px',
-        marginBottom: '1.5rem',
-        animationDelay: '0.1s',
-      }}>
-        Never lose a{' '}
-        <span className="gradient-text">receipt, bill,</span>
-        <br />
-        or warranty again.
-      </h1>
-
-      {/* Sub-headline */}
-      <p className="animate-slide-up" style={{
-        color:'var(--color-muted)', fontSize:'clamp(1rem, 2.5vw, 1.2rem)',
-        maxWidth:'600px', marginBottom:'2.5rem', lineHeight:1.7,
-        animationDelay:'0.2s',
-      }}>
-        Upload any purchase document. Our AI extracts merchant, date, total, 
-        items and warranty — and organises everything in your secure wallet.
-      </p>
-
-      {/* CTA row */}
-      <div className="animate-slide-up" style={{
-        display:'flex', gap:'1rem', flexWrap:'wrap', justifyContent:'center',
-        marginBottom:'4rem', animationDelay:'0.3s',
-      }}>
-        <button
-          className="btn-primary"
-          id="hero-cta-start"
-          onClick={() => navigate('/signup')}
-          style={{ fontSize:'1rem', padding:'0.85rem 2rem' }}
-        >
-          Start for free <ArrowRight size={16} style={{ display:'inline', marginLeft:'0.4rem', verticalAlign:'middle' }} />
-        </button>
-        <button className="btn-outline" id="hero-cta-demo" style={{ fontSize:'1rem', padding:'0.85rem 2rem' }}>
-          See how it works
-        </button>
-      </div>
-
-      {/* Floating mini stats */}
-      <div className="animate-fade-in" style={{
-        display:'flex', gap:'2rem', flexWrap:'wrap', justifyContent:'center',
-        animationDelay:'0.5s',
-      }}>
-        {[
-          { label:'Documents stored', value:'0 data loss' },
-          { label:'AI accuracy',      value:'95 %+' },
-          { label:'Free tier',        value:'Always' },
-        ].map(s => (
-          <div key={s.label} style={{ textAlign:'center' }}>
-            <div style={{ fontFamily:'var(--font-display)', fontSize:'1.5rem', fontWeight:700, color:'var(--color-accent2)' }}>
-              {s.value}
-            </div>
-            <div style={{ fontSize:'0.8rem', color:'var(--color-muted)', marginTop:'0.2rem' }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Mock app card */}
-      <div className="glass animate-float-slow" style={{
-        marginTop:'4rem', borderRadius:'20px', padding:'1.5rem',
-        maxWidth:'480px', width:'100%', textAlign:'left',
-        boxShadow:'0 24px 80px rgba(0,0,0,0.5)',
-      }}>
-        <div style={{ display:'flex', gap:'0.6rem', marginBottom:'1rem' }}>
-          {['#f87171','#fbbf24','#22d3a1'].map(c => (
-            <div key={c} style={{ width:12, height:12, borderRadius:'50%', background:c }} />
-          ))}
-        </div>
-        {[
-          { name:'Amazon Invoice — Oct 2026',   tag:'Electronics',  price:'₹24,999', color:'#6c63ff' },
-          { name:'Reliance Smart Bill',          tag:'Groceries',    price:'₹1,240',  color:'#22d3a1' },
-          { name:'Dell Laptop Warranty Card',    tag:'Warranty',     price:'3 yrs',   color:'#fbbf24' },
-        ].map(d => (
-          <div key={d.name} style={{
-            display:'flex', alignItems:'center', justifyContent:'space-between',
-            padding:'0.7rem 0.8rem', borderRadius:'10px', marginBottom:'0.5rem',
-            background:'rgba(255,255,255,0.03)', border:'1px solid var(--color-border)',
-            transition:'background 0.2s',
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', overflowX: 'hidden' }}>
+      {/* ─── Hero Section ────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: '8.5rem 1.5rem 5rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          textAlign: 'center',
+          position: 'relative',
+        }}
+      >
+        {/* Editorial Pill Label */}
+        <div
+          className="animate-slide-up"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            backgroundColor: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '9999px',
+            padding: '0.4rem 1.1rem',
+            marginBottom: '1.75rem',
+            boxShadow: '0 2px 8px rgba(56, 26, 22, 0.04)',
           }}
-          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(108,99,255,0.08)')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
+        >
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-accent)',
+            }}
+          />
+          <span
+            style={{
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--color-text)',
+            }}
           >
-            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-              <div style={{
-                width:34, height:34, borderRadius:8,
-                background:`${d.color}22`, display:'flex', alignItems:'center', justifyContent:'center',
-              }}>
-                <FileText size={16} color={d.color} />
+            What's Hot in Receipt & Warranty Care 2026
+          </span>
+        </div>
+
+        {/* Expressive Editorial Headline */}
+        <h1
+          className="animate-slide-up"
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 800,
+            fontSize: 'clamp(2.5rem, 5.5vw, 4.25rem)',
+            lineHeight: 1.08,
+            color: 'var(--color-text)',
+            letterSpacing: '-0.03em',
+            maxWidth: '920px',
+            margin: '0 auto 1.5rem',
+          }}
+        >
+          Every product you own,{' '}
+          <span
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontWeight: 400,
+              color: 'var(--color-accent)',
+            }}
+          >
+            backed by permanent proof.
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p
+          className="animate-slide-up"
+          style={{
+            fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
+            color: 'var(--color-muted)',
+            maxWidth: '680px',
+            margin: '0 auto 2.5rem',
+            lineHeight: 1.6,
+          }}
+        >
+          Never scramble for faded receipts or miss an expensive warranty deadline again.
+          ProofPocket AI safeguards your purchase bills, tracks active coverage, and organizes every product in one elegant wallet.
+        </p>
+
+        {/* Call to Actions */}
+        <div
+          className="animate-slide-up"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            marginBottom: '4.5rem',
+          }}
+        >
+          <button
+            onClick={() => navigate('/signup')}
+            className="btn-coral"
+            style={{ fontSize: '1rem', padding: '0.85rem 2rem' }}
+          >
+            Create Your Free Pocket <ArrowRight size={18} />
+          </button>
+          <button
+            onClick={() => navigate('/login')}
+            className="btn-editorial-ghost"
+            style={{ fontSize: '1rem', padding: '0.85rem 1.8rem' }}
+          >
+            Sign in to Existing Wallet
+          </button>
+        </div>
+
+        {/* ─── Hero Editorial Cards Composition ─────────────────────── */}
+        <div
+          className="animate-slide-up"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '1.5rem',
+            textAlign: 'left',
+          }}
+        >
+          {/* Card 1: Active Warranty */}
+          <div className="card-editorial card-editorial-hover" style={{ padding: '1.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <span className="pill-badge pill-active">Active • 284 Days Left</span>
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)', fontWeight: 600 }}>Apple Care+</span>
+            </div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.45rem', margin: '0 0 0.4rem', color: 'var(--color-text)' }}>
+              MacBook Pro 14" M3 Max
+            </h3>
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.86rem', margin: '0 0 1.25rem' }}>
+              Purchased from Apple Store BKC • ₹2,49,900
+            </p>
+            <div
+              style={{
+                backgroundColor: 'var(--color-surface-soft)',
+                borderRadius: '12px',
+                padding: '0.85rem 1rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '0.82rem',
+              }}
+            >
+              <div>
+                <span style={{ color: 'var(--color-muted)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase' }}>Expires On</span>
+                <strong style={{ color: 'var(--color-text)' }}>Oct 24, 2027</strong>
               </div>
               <div>
-                <div style={{ fontSize:'0.85rem', fontWeight:600 }}>{d.name}</div>
-                <div style={{ fontSize:'0.72rem', color:'var(--color-muted)', marginTop:'0.1rem' }}>{d.tag}</div>
+                <span style={{ color: 'var(--color-muted)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase' }}>Receipt</span>
+                <span style={{ color: 'var(--color-accent)', fontWeight: 600 }}>Attached (PDF)</span>
               </div>
             </div>
-            <div style={{ fontSize:'0.9rem', fontWeight:700, color:d.color }}>{d.price}</div>
           </div>
-        ))}
-      </div>
-    </section>
-  )
-}
 
-// ─── Features Section ──────────────────────────────────────────
-const features = [
-  {
-    icon: Brain,
-    color: '#6c63ff',
-    title: 'AI Data Extraction',
-    description: 'Upload any receipt image or PDF. Gemini AI reads it and pulls out merchant name, date, total, line items, and warranty information automatically.',
-  },
-  {
-    icon: Search,
-    color: '#22d3a1',
-    title: 'Instant Search',
-    description: 'Full-text search across all your documents. Find any purchase by product name, store, price range, or date — in milliseconds.',
-  },
-  {
-    icon: Bell,
-    color: '#fbbf24',
-    title: 'Warranty Alerts',
-    description: 'Never let a warranty expire silently. ProofPocket notifies you 30 days before so you can claim service in time.',
-  },
-  {
-    icon: Lock,
-    color: '#a78bfa',
-    title: 'Secure Wallet',
-    description: 'Documents are stored encrypted in Supabase with row-level security — only you can see your data. No shared servers, no leaks.',
-  },
-  {
-    icon: Shield,
-    color: '#f87171',
-    title: 'Fraud-Free Records',
-    description: 'Every document gets a hash fingerprint. Instantly verify authenticity before submitting for insurance or warranty claims.',
-  },
-  {
-    icon: BarChart3,
-    color: '#34d399',
-    title: 'Spending Insights',
-    description: 'Visual breakdown of your spending by category, merchant, and month — extracted purely from your own purchase documents.',
-  },
-]
-
-function Features() {
-  return (
-    <section id="features" style={{ padding:'6rem 1.5rem', maxWidth:'1200px', margin:'0 auto' }}>
-      <div style={{ textAlign:'center', marginBottom:'3.5rem' }}>
-        <div style={{
-          display:'inline-block', fontSize:'0.8rem', fontWeight:600, letterSpacing:'0.1em',
-          color:'var(--color-accent)', textTransform:'uppercase', marginBottom:'0.75rem',
-        }}>
-          Everything you need
-        </div>
-        <h2 style={{
-          fontFamily:'var(--font-display)', fontSize:'clamp(1.8rem,4vw,2.8rem)',
-          fontWeight:800, letterSpacing:'-0.02em', marginBottom:'1rem',
-        }}>
-          Built for smart shoppers
-        </h2>
-        <p style={{ color:'var(--color-muted)', maxWidth:'520px', margin:'0 auto', lineHeight:1.7 }}>
-          One app that replaces the shoebox of receipts, the spreadsheet of warranties, 
-          and the worry of lost bills.
-        </p>
-      </div>
-
-      <div style={{
-        display:'grid',
-        gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))',
-        gap:'1.5rem',
-      }}>
-        {features.map(f => (
-          <div key={f.title} className="glass" style={{
-            borderRadius:'16px', padding:'1.75rem',
-            transition:'transform 0.25s ease, box-shadow 0.25s ease',
-            cursor:'default',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.transform = 'translateY(-4px)'
-            e.currentTarget.style.boxShadow = `0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px ${f.color}33`
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = 'none'
-          }}
+          {/* Card 2: Expiring Soon Alert */}
+          <div
+            className="card-editorial card-editorial-hover"
+            style={{
+              padding: '1.75rem',
+              border: '1.5px solid var(--color-warning-border)',
+              backgroundColor: '#FFFDF7',
+            }}
           >
-            <div style={{
-              width:48, height:48, borderRadius:12,
-              background:`${f.color}1a`, display:'flex', alignItems:'center', justifyContent:'center',
-              marginBottom:'1.25rem',
-            }}>
-              <f.icon size={22} color={f.color} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <span className="pill-badge pill-expiring">Expiring Soon • 12 Days Left</span>
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-warning)', fontWeight: 700 }}>Claim Window Closing</span>
             </div>
-            <h3 style={{ fontFamily:'var(--font-display)', fontSize:'1.05rem', fontWeight:700, marginBottom:'0.6rem' }}>
-              {f.title}
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.45rem', margin: '0 0 0.4rem', color: 'var(--color-text)' }}>
+              Sony WH-1000XM5 Headphones
             </h3>
-            <p style={{ color:'var(--color-muted)', fontSize:'0.9rem', lineHeight:1.65 }}>
-              {f.description}
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.86rem', margin: '0 0 1.25rem' }}>
+              Purchased on Amazon India • ₹29,990
+            </p>
+            <div
+              style={{
+                backgroundColor: 'var(--color-warning-bg)',
+                borderRadius: '12px',
+                padding: '0.85rem 1rem',
+                border: '1px solid var(--color-warning-border)',
+                fontSize: '0.82rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>
+                Service Center: 1800-103-7799
+              </span>
+              <span className="pill-badge" style={{ backgroundColor: '#FFFFFF', color: 'var(--color-warning)' }}>
+                Action Needed
+              </span>
+            </div>
+          </div>
+
+          {/* Card 3: Instant AI Ingestion */}
+          <div className="card-editorial card-editorial-hover" style={{ padding: '1.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <span className="pill-badge pill-coral">AI Extracted</span>
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)', fontWeight: 600 }}>Tax Invoice</span>
+            </div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.45rem', margin: '0 0 0.4rem', color: 'var(--color-text)' }}>
+              Dyson V15 Cordless Vacuum
+            </h3>
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.86rem', margin: '0 0 1.25rem' }}>
+              Croma Electronics • Serial: #DY-881290-B
+            </p>
+            <div
+              style={{
+                backgroundColor: 'var(--color-surface-soft)',
+                borderRadius: '12px',
+                padding: '0.85rem 1rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '0.82rem',
+              }}
+            >
+              <div>
+                <span style={{ color: 'var(--color-muted)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase' }}>Coverage</span>
+                <strong style={{ color: 'var(--color-text)' }}>2 Years Manufacturer</strong>
+              </div>
+              <div>
+                <span style={{ color: 'var(--color-muted)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase' }}>Return Date</span>
+                <span style={{ color: 'var(--color-muted)', fontWeight: 600 }}>Expired (30d)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Editorial Feature Section 1 ─────────────────────────────── */}
+      <section
+        id="features"
+        style={{
+          backgroundColor: 'var(--color-surface)',
+          borderTop: '1px solid var(--color-border)',
+          borderBottom: '1px solid var(--color-border)',
+          padding: '6rem 1.5rem',
+        }}
+      >
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 4rem' }}>
+            <span
+              style={{
+                color: 'var(--color-accent)',
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '0.5rem',
+              }}
+            >
+              Core Philosophy
+            </span>
+            <h2
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
+                color: 'var(--color-text)',
+                margin: '0 0 1rem',
+                lineHeight: 1.15,
+              }}
+            >
+              Built to protect the purchases you worked hard to afford.
+            </h2>
+            <p style={{ color: 'var(--color-muted)', fontSize: '1.05rem', margin: 0 }}>
+              Physical thermal paper fades after six months. Brands reject warranty claims without proof.
+              ProofPocket AI fixes this permanently.
             </p>
           </div>
-        ))}
-      </div>
-    </section>
-  )
-}
 
-// ─── How It Works ──────────────────────────────────────────────
-const steps = [
-  { icon: Upload,        step:'01', title:'Upload',  desc:'Drag & drop or take a photo of any purchase document — bill, invoice, warranty card, or receipt.' },
-  { icon: Brain,         step:'02', title:'AI reads it', desc:'Gemini AI scans the document and extracts structured data: merchant, date, total, items, warranty.' },
-  { icon: FileText,      step:'03', title:'Organised', desc:'Data is saved to your private Supabase wallet. You see a clean card with all extracted details.' },
-  { icon: Bell,          step:'04', title:'Alerted',  desc:'Get notified before warranties expire, or search your wallet anytime from any device.' },
-]
-
-function HowItWorks() {
-  return (
-    <section id="how-it-works" style={{
-      padding:'6rem 1.5rem',
-      background:'linear-gradient(180deg, transparent 0%, rgba(108,99,255,0.04) 50%, transparent 100%)',
-    }}>
-      <div style={{ maxWidth:'1000px', margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:'3.5rem' }}>
-          <div style={{
-            display:'inline-block', fontSize:'0.8rem', fontWeight:600, letterSpacing:'0.1em',
-            color:'var(--color-accent)', textTransform:'uppercase', marginBottom:'0.75rem',
-          }}>
-            4 simple steps
-          </div>
-          <h2 style={{
-            fontFamily:'var(--font-display)', fontSize:'clamp(1.8rem,4vw,2.8rem)',
-            fontWeight:800, letterSpacing:'-0.02em',
-          }}>
-            How ProofPocket works
-          </h2>
-        </div>
-
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(210px, 1fr))', gap:'1.5rem' }}>
-          {steps.map((s, i) => (
-            <div key={s.step} style={{ textAlign:'center', position:'relative' }}>
-              {/* Connector line */}
-              {i < steps.length - 1 && (
-                <div style={{
-                  position:'absolute', top:'2.2rem', left:'calc(50% + 2rem)', right:'-calc(50% - 2rem)',
-                  height:'1px', background:'linear-gradient(90deg, var(--color-accent), transparent)',
-                  display:'none',
-                }} className="step-connector" />
-              )}
-              <div style={{
-                width:64, height:64, borderRadius:16, margin:'0 auto 1.25rem',
-                background:'linear-gradient(135deg, rgba(108,99,255,0.18), rgba(167,139,250,0.12))',
-                border:'1px solid rgba(108,99,255,0.35)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                position:'relative',
-              }}>
-                <s.icon size={26} color='#a78bfa' />
-                <div style={{
-                  position:'absolute', top:-10, right:-10,
-                  background:'var(--color-accent)', borderRadius:'999px',
-                  width:22, height:22, fontSize:'0.65rem', fontWeight:800,
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  color:'#fff',
-                }}>
-                  {i + 1}
-                </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {/* Feature 1 */}
+            <div style={{ padding: '1rem' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  backgroundColor: 'var(--color-accent-soft)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-accent)',
+                  marginBottom: '1.25rem',
+                }}
+              >
+                <Calendar size={24} />
               </div>
-              <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, marginBottom:'0.5rem' }}>{s.title}</h3>
-              <p style={{ color:'var(--color-muted)', fontSize:'0.88rem', lineHeight:1.65 }}>{s.desc}</p>
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                Accurate Expiry Math
+              </h3>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                Never guess an expiry date. Enter purchase date and warranty duration, and ProofPocket calculates the exact date with calendar-accurate leap and month offsets.
+              </p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
-// ─── CTA Banner ────────────────────────────────────────────────
-function CTABanner() {
-  const navigate = useNavigate()
-  return (
-    <section id="about" style={{ padding:'5rem 1.5rem' }}>
-      <div style={{
-        maxWidth:'800px', margin:'0 auto', textAlign:'center',
-        background:'linear-gradient(135deg, rgba(108,99,255,0.15), rgba(167,139,250,0.08))',
-        border:'1px solid rgba(108,99,255,0.3)',
-        borderRadius:'24px', padding:'3.5rem 2rem',
-        position:'relative', overflow:'hidden',
-      }}>
-        <div style={{
-          position:'absolute', inset:0,
-          background:'radial-gradient(circle at 50% -20%, rgba(108,99,255,0.25), transparent 70%)',
-          pointerEvents:'none',
-        }} />
-        <div style={{ position:'relative' }}>
-          <Star size={32} color='#fbbf24' style={{ marginBottom:'1rem' }} />
-          <h2 style={{
-            fontFamily:'var(--font-display)', fontSize:'clamp(1.6rem,4vw,2.4rem)',
-            fontWeight:800, letterSpacing:'-0.02em', marginBottom:'1rem',
-          }}>
-            Your purchase history,<br />
-            <span className="gradient-text">finally under control.</span>
-          </h2>
-          <p style={{ color:'var(--color-muted)', maxWidth:'440px', margin:'0 auto 2rem', lineHeight:1.7 }}>
-            Built as a BTech AIML minor project using real AI, real database, 
-            and real-world architecture. No fakes, no placeholders.
-          </p>
-          <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap' }}>
-            <button
-              className="btn-primary"
-              id="cta-banner-start"
-              onClick={() => navigate('/signup')}
-              style={{ fontSize:'1rem', padding:'0.85rem 2rem' }}
-            >
-              Create free account
-            </button>
-            <button className="btn-outline" id="cta-banner-github" style={{ fontSize:'1rem', padding:'0.85rem 2rem' }}>
-              View on GitHub
-            </button>
-          </div>
-          <div style={{
-            display:'flex', gap:'1.5rem', justifyContent:'center', marginTop:'2rem', flexWrap:'wrap',
-          }}>
-            {['No credit card required','Open source','Built with FastAPI + React'].map(t => (
-              <div key={t} style={{ display:'flex', alignItems:'center', gap:'0.4rem', fontSize:'0.83rem', color:'var(--color-muted)' }}>
-                <CheckCircle size={14} color='var(--color-success)' /> {t}
+            {/* Feature 2 */}
+            <div style={{ padding: '1rem' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  backgroundColor: 'var(--color-accent-soft)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-accent)',
+                  marginBottom: '1.25rem',
+                }}
+              >
+                <Clock size={24} />
               </div>
-            ))}
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                Expiring Soon Radar
+              </h3>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                Get an organized view of warranties expiring within 30 days. Service minor defects, claim manufacturer fixes, and exercise return windows before coverage lapses.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div style={{ padding: '1rem' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  backgroundColor: 'var(--color-accent-soft)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-accent)',
+                  marginBottom: '1.25rem',
+                }}
+              >
+                <Lock size={24} />
+              </div>
+              <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.5rem' }}>
+                Private Supabase Vault
+              </h3>
+              <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                Your financial records and purchase proofs stay private. Row-Level Security ensures only your authenticated user account can view, download, or edit your items.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  )
-}
+      </section>
 
-// ─── Footer ────────────────────────────────────────────────────
-function Footer() {
-  return (
-    <footer style={{
-      borderTop:'1px solid var(--color-border)', padding:'2rem 1.5rem',
-      textAlign:'center', color:'var(--color-muted)', fontSize:'0.85rem',
-    }}>
-      <p>
-        © 2026 ProofPocket AI · Built by <strong style={{ color:'var(--color-accent2)' }}>Muppalla Sai Mahesh</strong>
-        {' · '}BTech AIML Minor Project
-      </p>
-    </footer>
-  )
-}
+      {/* ─── Editorial Step-By-Step ──────────────────────────────────── */}
+      <section
+        id="how-it-works"
+        style={{
+          padding: '6rem 1.5rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 4rem' }}>
+          <span
+            style={{
+              color: 'var(--color-accent)',
+              fontSize: '0.82rem',
+              fontWeight: 800,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '0.5rem',
+            }}
+          >
+            How It Works
+          </span>
+          <h2
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
+              color: 'var(--color-text)',
+              margin: '0 0 1rem',
+              lineHeight: 1.15,
+            }}
+          >
+            Three steps from purchase to total peace of mind.
+          </h2>
+        </div>
 
-// ─── Page export ──────────────────────────────────────────────
-export default function LandingPage() {
-  return (
-    <>
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <CTABanner />
-      <Footer />
-    </>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {/* Step 1 */}
+          <div className="card-editorial" style={{ padding: '2rem' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '2.5rem',
+                color: 'var(--color-accent)',
+                display: 'block',
+                marginBottom: '1rem',
+                lineHeight: 1,
+              }}
+            >
+              01
+            </span>
+            <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.75rem' }}>
+              Add Product & Warranty
+            </h3>
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+              Enter product details, price, category, and warranty duration in months or years. All optional fields remain strictly optional.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="card-editorial" style={{ padding: '2rem' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '2.5rem',
+                color: 'var(--color-accent)',
+                display: 'block',
+                marginBottom: '1rem',
+                lineHeight: 1,
+              }}
+            >
+              02
+            </span>
+            <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.75rem' }}>
+              Attach Receipt or Invoice
+            </h3>
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+              Upload your receipt (PDF, PNG, JPG). It is encrypted in your private Supabase storage bucket, safely linked to your product.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="card-editorial" style={{ padding: '2rem' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '2.5rem',
+                color: 'var(--color-accent)',
+                display: 'block',
+                marginBottom: '1rem',
+                lineHeight: 1,
+              }}
+            >
+              03
+            </span>
+            <h3 style={{ fontFamily: 'var(--font-sans)', fontWeight: 800, fontSize: '1.25rem', color: 'var(--color-text)', margin: '0 0 0.75rem' }}>
+              Track & Claim Confidently
+            </h3>
+            <p style={{ color: 'var(--color-muted)', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+              Review active vs expiring warranties at a glance. Find repair contacts, serial numbers, and authentic proof in one tap whenever you need service.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Editorial Call to Action ─────────────────────────────────── */}
+      <section
+        style={{
+          padding: '6rem 1.5rem',
+          backgroundColor: 'var(--color-text)',
+          color: '#FFFFFF',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+              margin: '0 0 1.25rem',
+              lineHeight: 1.15,
+              fontWeight: 400,
+            }}
+          >
+            Start your purchase wallet{' '}
+            <span style={{ fontStyle: 'italic', color: '#F87171' }}>today.</span>
+          </h2>
+          <p style={{ color: '#D5C7B6', fontSize: '1.1rem', margin: '0 auto 2.5rem', maxWidth: '580px', lineHeight: 1.6 }}>
+            Free for all personal devices, appliances, and retail purchases. Keep what matters safe.
+          </p>
+          <button
+            onClick={() => navigate('/signup')}
+            className="btn-coral"
+            style={{ fontSize: '1rem', padding: '0.85rem 2.2rem' }}
+          >
+            Create Your Account <ArrowRight size={18} />
+          </button>
+        </div>
+      </section>
+
+      {/* ─── Footer ──────────────────────────────────────────────────── */}
+      <footer
+        style={{
+          padding: '3rem 1.5rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1.5rem',
+          fontSize: '0.88rem',
+          color: 'var(--color-muted)',
+          borderTop: '1px solid var(--color-border)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div
+            style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '8px',
+              backgroundColor: 'var(--color-accent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ShieldCheck size={15} color="#FFFFFF" />
+          </div>
+          <strong style={{ color: 'var(--color-text)' }}>ProofPocket AI</strong>
+          <span>• Editorial Warranty Wallet</span>
+        </div>
+
+        <div>
+          <span>Crafted for BTech AIML Minor Project by </span>
+          <strong style={{ color: 'var(--color-text)' }}>Muppalla Sai Mahesh</strong>
+        </div>
+      </footer>
+    </div>
   )
 }

@@ -1,26 +1,32 @@
 import { useState } from 'react'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, Link } from 'react-router-dom'
 import {
-  LayoutDashboard, ShoppingBag, FileText,
-  Shield, Wallet, ChevronLeft, ChevronRight,
-  Upload, Settings, HelpCircle, LogOut,
+  LayoutDashboard,
+  ShoppingBag,
+  FileText,
+  Shield,
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Settings,
+  LogOut,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
+interface SidebarProps {
+  onOpenAddModal?: () => void
+}
+
 const NAV_ITEMS = [
-  { label: 'Dashboard',        path: '/app/dashboard',          icon: LayoutDashboard },
-  { label: 'My Purchases',     path: '/app/purchases',          icon: ShoppingBag     },
-  { label: 'Documents',        path: '/app/documents',          icon: FileText        },
-  { label: 'Warranty Tracker', path: '/app/warranty',           icon: Shield          },
-]
-
-const BOTTOM_ITEMS = [
-  { label: 'Upload',   path: '/app/upload',   icon: Upload   },
+  { label: 'Dashboard', path: '/app/dashboard', icon: LayoutDashboard },
+  { label: 'My Purchases', path: '/app/purchases', icon: ShoppingBag },
+  { label: 'Documents', path: '/app/documents', icon: FileText },
+  { label: 'Warranty Tracker', path: '/app/warranty', icon: Shield },
   { label: 'Settings', path: '/app/settings', icon: Settings },
-  { label: 'Help',     path: '/app/help',     icon: HelpCircle },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ onOpenAddModal }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
@@ -30,7 +36,12 @@ export default function Sidebar() {
   const email = user?.email || ''
   const displayName = fullName || email.split('@')[0] || 'User'
   const initials = fullName
-    ? fullName.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
+    ? fullName
+        .split(' ')
+        .map((p) => p[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
     : email.slice(0, 2).toUpperCase() || 'U'
 
   const handleSignOut = async () => {
@@ -39,209 +50,245 @@ export default function Sidebar() {
   }
 
   return (
-    <aside style={{
-      width:           collapsed ? '68px' : '220px',
-      minHeight:       '100vh',
-      background:      'var(--color-surface)',
-      borderRight:     '1px solid var(--color-border)',
-      display:         'flex',
-      flexDirection:   'column',
-      transition:      'width 0.25s ease',
-      position:        'sticky',
-      top:             0,
-      flexShrink:      0,
-      zIndex:          50,
-    }}>
-      {/* ── Logo row ─────────────────────────────────────────── */}
-      <div style={{
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: collapsed ? 'center' : 'space-between',
-        padding:        '1.25rem 1rem',
-        borderBottom:   '1px solid var(--color-border)',
-      }}>
-        {!collapsed && (
-          <div style={{ display:'flex', alignItems:'center', gap:'0.6rem' }}>
-            <div style={{
-              width:32, height:32, borderRadius:8,
-              background:'linear-gradient(135deg,#6c63ff,#a78bfa)',
-              display:'flex', alignItems:'center', justifyContent:'center',
-              flexShrink:0,
-              boxShadow:'0 0 12px rgba(108,99,255,0.4)',
-            }}>
-              <Wallet size={17} color="#fff" />
-            </div>
-            <span style={{
-              fontFamily:'var(--font-display)', fontWeight:700, fontSize:'0.95rem',
-              whiteSpace:'nowrap', overflow:'hidden',
-            }}>
-              Proof<span style={{ color:'#a78bfa' }}>Pocket</span>
-            </span>
-          </div>
-        )}
-        {collapsed && (
-          <div style={{
-            width:32, height:32, borderRadius:8,
-            background:'linear-gradient(135deg,#6c63ff,#a78bfa)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-          }}>
-            <Wallet size={17} color="#fff" />
-          </div>
-        )}
-        <button
-          id="sidebar-collapse-btn"
-          onClick={() => setCollapsed(c => !c)}
+    <aside
+      style={{
+        width: collapsed ? '72px' : '230px',
+        minHeight: '100vh',
+        backgroundColor: 'var(--color-surface)',
+        borderRight: '1px solid var(--color-border)',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'width 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+        position: 'sticky',
+        top: 0,
+        flexShrink: 0,
+        zIndex: 50,
+      }}
+    >
+      {/* ── Brand Logo Header ─────────────────────────────────── */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'space-between',
+          padding: '1.25rem 1rem',
+          borderBottom: '1px solid var(--color-border)',
+        }}
+      >
+        <Link
+          to="/app/dashboard"
           style={{
-            background:'rgba(255,255,255,0.05)', border:'1px solid var(--color-border)',
-            borderRadius:6, width:24, height:24, display:'flex', alignItems:'center',
-            justifyContent:'center', cursor:'pointer', color:'var(--color-muted)',
-            flexShrink:0, marginLeft: collapsed ? 0 : '0.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.65rem',
+            textDecoration: 'none',
+            overflow: 'hidden',
           }}
         >
-          {collapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              backgroundColor: 'var(--color-accent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 3px 10px rgba(240, 68, 56, 0.28)',
+            }}
+          >
+            <ShieldCheck size={20} color="#FFFFFF" strokeWidth={2.4} />
+          </div>
+
+          {!collapsed && (
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 800,
+                fontSize: '1.1rem',
+                color: 'var(--color-text)',
+                letterSpacing: '-0.02em',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              ProofPocket<span style={{ color: 'var(--color-accent)' }}>.ai</span>
+            </span>
+          )}
+        </Link>
+
+        {!collapsed && (
+          <button
+            onClick={() => setCollapsed(true)}
+            aria-label="Collapse sidebar"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'var(--color-muted)',
+              padding: '0.3rem',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ChevronLeft size={18} />
+          </button>
+        )}
+      </div>
+
+      {/* Expand button when collapsed */}
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          aria-label="Expand sidebar"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'var(--color-muted)',
+            padding: '0.5rem',
+            margin: '0.5rem auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ChevronRight size={18} />
+        </button>
+      )}
+
+      {/* ── Primary Action: Add Product ───────────────────────── */}
+      <div style={{ padding: collapsed ? '0.75rem 0.5rem' : '1rem' }}>
+        <button
+          onClick={onOpenAddModal}
+          className="btn-coral"
+          title="Add Product"
+          style={{
+            width: '100%',
+            padding: collapsed ? '0.65rem 0' : '0.65rem 1rem',
+            borderRadius: '12px',
+            fontSize: '0.88rem',
+          }}
+        >
+          <Plus size={18} strokeWidth={2.4} />
+          {!collapsed && <span>Add Product</span>}
         </button>
       </div>
 
-      {/* ── Main nav ─────────────────────────────────────────── */}
-      <nav style={{ flex:1, padding:'0.75rem 0.5rem', display:'flex', flexDirection:'column', gap:'2px' }}>
-        {NAV_ITEMS.map(item => {
-          const active = location.pathname.startsWith(item.path)
+      {/* ── Navigation Items ──────────────────────────────────── */}
+      <nav style={{ padding: '0.5rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+        {NAV_ITEMS.map((item) => {
+          const Icon = item.icon
+          const isActive = location.pathname.startsWith(item.path)
+
           return (
             <NavLink
               key={item.path}
               to={item.path}
               title={collapsed ? item.label : undefined}
               style={{
-                display:        'flex',
-                alignItems:     'center',
-                gap:            '0.65rem',
-                padding:        '0.6rem 0.75rem',
-                borderRadius:   '8px',
-                textDecoration: 'none',
-                color:          active ? '#fff' : 'var(--color-muted)',
-                background:     active ? 'linear-gradient(135deg,rgba(108,99,255,0.25),rgba(167,139,250,0.15))' : 'transparent',
-                border:         active ? '1px solid rgba(108,99,255,0.35)' : '1px solid transparent',
-                transition:     'all 0.18s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: collapsed ? '0.7rem 0' : '0.7rem 0.9rem',
                 justifyContent: collapsed ? 'center' : 'flex-start',
-                whiteSpace:     'nowrap',
-                overflow:       'hidden',
-                position:       'relative',
-              }}
-              onMouseEnter={e => {
-                if (!active) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
-                  e.currentTarget.style.color       = 'var(--color-text)'
-                }
-              }}
-              onMouseLeave={e => {
-                if (!active) {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color       = 'var(--color-muted)'
-                }
+                borderRadius: '12px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.9rem',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? 'var(--color-accent)' : 'var(--color-text)',
+                backgroundColor: isActive ? 'var(--color-accent-soft)' : 'transparent',
+                border: isActive ? '1px solid var(--color-accent-border)' : '1px solid transparent',
+                transition: 'all 0.15s ease',
               }}
             >
-              {/* Active bar */}
-              {active && (
-                <div style={{
-                  position:'absolute', left:0, top:'20%', bottom:'20%',
-                  width:3, borderRadius:2, background:'#6c63ff',
-                }} />
-              )}
-              <item.icon
-                size={18}
-                color={active ? '#a78bfa' : 'currentColor'}
-                style={{ flexShrink:0 }}
-              />
-              {!collapsed && (
-                <span style={{ fontSize:'0.875rem', fontWeight: active ? 600 : 400 }}>
-                  {item.label}
-                </span>
-              )}
+              <Icon size={19} color={isActive ? 'var(--color-accent)' : 'var(--color-muted)'} />
+              {!collapsed && <span>{item.label}</span>}
             </NavLink>
           )
         })}
       </nav>
 
-      {/* ── Bottom nav ───────────────────────────────────────── */}
-      <div style={{ padding:'0.75rem 0.5rem', borderTop:'1px solid var(--color-border)', display:'flex', flexDirection:'column', gap:'2px' }}>
-        {BOTTOM_ITEMS.map(item => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            title={collapsed ? item.label : undefined}
+      {/* ── User Profile & Sign Out ───────────────────────────── */}
+      <div
+        style={{
+          padding: '1rem',
+          borderTop: '1px solid var(--color-border)',
+          backgroundColor: 'var(--color-surface-soft)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <div
             style={{
-              display:'flex', alignItems:'center', gap:'0.65rem',
-              padding:'0.55rem 0.75rem', borderRadius:'8px',
-              textDecoration:'none', color:'var(--color-muted)',
-              transition:'all 0.18s ease', justifyContent: collapsed ? 'center' : 'flex-start',
-              whiteSpace:'nowrap', overflow:'hidden',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-text)',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              flexShrink: 0,
             }}
-            onMouseEnter={e => { e.currentTarget.style.background='rgba(255,255,255,0.05)'; e.currentTarget.style.color='var(--color-text)' }}
-            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--color-muted)' }}
           >
-            <item.icon size={17} style={{ flexShrink:0 }} />
-            {!collapsed && <span style={{ fontSize:'0.85rem' }}>{item.label}</span>}
-          </NavLink>
-        ))}
+            {initials}
+          </div>
 
-        {/* ── User chip & Logout ─────────────────────────── */}
-        {!collapsed ? (
-          <div style={{
-            marginTop:'0.75rem', padding:'0.6rem 0.75rem', borderRadius:8,
-            background:'rgba(108,99,255,0.08)', border:'1px solid rgba(108,99,255,0.2)',
-            display:'flex', alignItems:'center', justifyContent:'space-between', gap:'0.6rem',
-          }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.6rem', minWidth:0, overflow:'hidden' }}>
-              <div style={{
-                width:28, height:28, borderRadius:'50%', flexShrink:0,
-                background:'linear-gradient(135deg,#6c63ff,#22d3a1)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                fontSize:'0.72rem', fontWeight:700, color:'#fff',
-              }}>
-                {initials}
+          {!collapsed && (
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: '0.86rem',
+                  fontWeight: 700,
+                  color: 'var(--color-text)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {displayName}
               </div>
-              <div style={{ overflow:'hidden' }}>
-                <div style={{ fontSize:'0.78rem', fontWeight:600, lineHeight:1.2, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-                  {displayName}
-                </div>
-                <div style={{ fontSize:'0.68rem', color:'var(--color-muted)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-                  {email || 'Free plan'}
-                </div>
+              <div
+                style={{
+                  fontSize: '0.74rem',
+                  color: 'var(--color-muted)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {email}
               </div>
             </div>
+          )}
+
+          {!collapsed && (
             <button
-              id="sidebar-logout-btn"
               onClick={handleSignOut}
-              title="Log out"
+              title="Sign Out"
+              aria-label="Sign out of account"
               style={{
-                background:'none', border:'none', color:'var(--color-muted)',
-                cursor:'pointer', padding:'4px', display:'flex', alignItems:'center',
-                borderRadius:6, transition:'all 0.2s', flexShrink:0,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--color-muted)',
+                padding: '0.35rem',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
               }}
-              onMouseEnter={e => { e.currentTarget.style.color='var(--color-danger)'; e.currentTarget.style.background='rgba(248,113,113,0.1)' }}
-              onMouseLeave={e => { e.currentTarget.style.color='var(--color-muted)'; e.currentTarget.style.background='none' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-danger)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}
             >
-              <LogOut size={15} />
+              <LogOut size={17} />
             </button>
-          </div>
-        ) : (
-          <div style={{ marginTop:'0.75rem', display:'flex', justifyContent:'center' }}>
-            <button
-              id="sidebar-collapsed-logout-btn"
-              onClick={handleSignOut}
-              title={`Logged in as ${email} — Click to Log out`}
-              style={{
-                width:30, height:30, borderRadius:'50%',
-                background:'linear-gradient(135deg,#6c63ff,#22d3a1)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                fontSize:'0.72rem', fontWeight:700, color:'#fff', border:'none',
-                cursor:'pointer',
-              }}
-            >
-              {initials}
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </aside>
   )

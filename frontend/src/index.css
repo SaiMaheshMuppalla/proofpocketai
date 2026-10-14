@@ -1,24 +1,54 @@
 @import "tailwindcss";
 
-/* ─── Design tokens ─────────────────────────────────── */
+/* ─── ProofPocket AI Editorial Design System 2026 (Chillbabe Aesthetic) ─── */
 :root {
-  --color-bg:          #0a0b10;
-  --color-surface:     #12141c;
-  --color-surface2:    #1a1d28;
-  --color-border:      #2a2d3e;
-  --color-accent:      #6c63ff;
-  --color-accent2:     #a78bfa;
-  --color-success:     #22d3a1;
-  --color-warning:     #fbbf24;
-  --color-danger:      #f87171;
-  --color-text:        #e2e8f0;
-  --color-muted:       #64748b;
-  --font-sans:         'Inter', system-ui, sans-serif;
-  --font-display:      'Space Grotesk', system-ui, sans-serif;
+  /* Warm ivory and dark chocolate with vibrant coral accent */
+  --color-bg:              #F7F3E9;       /* Warm ivory / cream page background */
+  --color-bg-subtle:       #F0E9DC;       /* Slightly deeper cream for subtle layers */
+  --color-surface:         #FFFEFA;       /* Pure warm porcelain white for cards */
+  --color-surface-soft:    #F5EFE4;       /* Secondary card / pill container */
+  --color-surface-hover:   #FAF6EE;
+  
+  --color-border:          #E8DFD3;       /* Delicate warm beige border */
+  --color-border-strong:   #D5C7B6;       /* Defined outline */
+  
+  --color-text:            #381A16;       /* Deep chocolate brown primary text */
+  --color-text-body:       #4B211B;       /* Dark rich cocoa body copy */
+  --color-muted:           #7A6862;       /* Warm stone / hazelnut secondary text */
+  --color-muted-light:     #A3938D;       /* Subdued metadata */
+  
+  --color-accent:          #F04438;       /* Bright vivid coral */
+  --color-accent-hover:    #D9382C;
+  --color-accent-soft:     rgba(240, 68, 56, 0.08); /* Soft coral blush */
+  --color-accent-border:   rgba(240, 68, 56, 0.25);
+  
+  /* Status Semantics */
+  --color-success:         #15803D;       /* Deep botanical green */
+  --color-success-bg:      #ECFDF5;
+  --color-success-border:  #A7F3D0;
+  
+  --color-warning:         #B45309;       /* Warm honey / amber */
+  --color-warning-bg:      #FFFBEB;
+  --color-warning-border:  #FDE68A;
+  
+  --color-danger:          #B91C1C;       /* Terracotta / crimson */
+  --color-danger-bg:       #FEF2F2;
+  --color-danger-border:   #FECACA;
+  
+  --color-info:            #0369A1;
+  --color-info-bg:         #F0F9FF;
+  --color-info-border:     #BAE6FD;
+  
+  /* Typography Families */
+  --font-sans:             'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif:            'DM Serif Display', Georgia, serif;
+  --font-display:          'DM Serif Display', Georgia, serif;
 }
 
-/* ─── Base ─────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ─── Base Styles ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 html {
   scroll-behavior: smooth;
@@ -29,90 +59,217 @@ html {
 body {
   margin: 0;
   background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-text-body);
   font-family: var(--font-sans);
   line-height: 1.6;
 }
 
-/* ─── Scrollbar ─────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-surface); }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
-
-/* ─── Gradient text utility ─────────────────────────── */
-.gradient-text {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
 }
 
-/* ─── Glass card ────────────────────────────────────── */
-.glass {
-  background: rgba(26, 29, 40, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* ─── Editorial Typography Utilities ─────────────────────── */
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+.font-editorial-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.font-sans-ui {
+  font-family: var(--font-sans);
+}
+
+/* ─── Card Styles ────────────────────────────────────────── */
+.card-editorial {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(56, 26, 22, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-editorial-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(56, 26, 22, 0.08);
+}
+
+.card-editorial-soft {
+  background-color: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+/* ─── Button Styles ──────────────────────────────────────── */
+.btn-coral {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 3px 12px rgba(240, 68, 56, 0.22);
+}
+
+.btn-coral:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(240, 68, 56, 0.32);
+}
+
+.btn-coral:active {
+  transform: translateY(0);
+}
+
+.btn-editorial-ghost {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-editorial-ghost:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.btn-editorial-secondary {
+  background-color: var(--color-surface-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s ease;
+}
+
+.btn-editorial-secondary:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+/* ─── Pill Tags & Badges ─────────────────────────────────── */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.pill-active {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
+}
+
+.pill-expiring {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning-border);
+}
+
+.pill-expired {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger-border);
+}
+
+.pill-unknown {
+  background-color: var(--color-surface-soft);
+  color: var(--color-muted);
   border: 1px solid var(--color-border);
 }
 
-/* ─── Glow button ───────────────────────────────────── */
-.btn-primary {
-  background: linear-gradient(135deg, var(--color-accent), #8b5cf6);
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.75rem 1.75rem;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 20px rgba(108, 99, 255, 0.35);
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 32px rgba(108, 99, 255, 0.55);
-}
-.btn-primary:active { transform: translateY(0); }
-
-.btn-outline {
-  background: transparent;
-  border: 1.5px solid var(--color-border);
-  border-radius: 10px;
-  color: var(--color-text);
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.75rem 1.75rem;
-  transition: all 0.25s ease;
-}
-.btn-outline:hover {
-  border-color: var(--color-accent);
+.pill-coral {
+  background-color: var(--color-accent-soft);
   color: var(--color-accent);
-  background: rgba(108, 99, 255, 0.08);
+  border: 1px solid var(--color-accent-border);
 }
 
-/* ─── Floating orb animations ───────────────────────── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-20px); }
+/* ─── Input & Form Elements ──────────────────────────────── */
+.input-editorial {
+  width: 100%;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 0.65rem 0.95rem;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
+
+.input-editorial:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(240, 68, 56, 0.12);
 }
+
+.input-editorial::placeholder {
+  color: var(--color-muted-light);
+}
+
+/* ─── Animations ─────────────────────────────────────────── */
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-.animate-float      { animation: float 6s ease-in-out infinite; }
-.animate-float-slow { animation: float 9s ease-in-out infinite; }
-.animate-slide-up   { animation: slide-up 0.7s ease forwards; }
-.animate-fade-in    { animation: fade-in 0.5s ease forwards; }
+.animate-slide-up {
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease forwards;
+}

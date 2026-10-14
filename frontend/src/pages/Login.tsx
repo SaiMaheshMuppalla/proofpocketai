@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { isSupabaseConfigured, supabaseConfigError } from '../lib/supabase'
-import { Wallet, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, ArrowLeft } from 'lucide-react'
+import { ShieldCheck, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, ArrowLeft } from 'lucide-react'
 
 export default function Login() {
   const { user, loading: authLoading, signIn } = useAuth()
@@ -29,7 +29,7 @@ export default function Login() {
     setErrorMsg(null)
 
     if (!email.trim() || !password) {
-      setErrorMsg('Please enter both email and password.')
+      setErrorMsg('Please enter both your email address and password.')
       return
     }
 
@@ -38,7 +38,7 @@ export default function Login() {
     setSubmitting(false)
 
     if (error) {
-      setErrorMsg(error.message || 'Failed to sign in. Please check your credentials.')
+      setErrorMsg(error.message || 'Failed to sign in. Please verify your credentials.')
     } else {
       navigate(from, { replace: true })
     }
@@ -52,43 +52,26 @@ export default function Login() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'var(--color-bg)',
+        backgroundColor: 'var(--color-bg)',
         padding: '2rem 1.5rem',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      {/* Background ambient glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '500px',
-          height: '500px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(108, 99, 255, 0.14) 0%, transparent 65%)',
-          filter: 'blur(50px)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Back to Home link */}
+      {/* Back to Home Link */}
       <Link
         to="/"
         style={{
           position: 'absolute',
-          top: '1.75rem',
-          left: '1.75rem',
+          top: '2rem',
+          left: '2rem',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.4rem',
+          gap: '0.45rem',
           color: 'var(--color-muted)',
           textDecoration: 'none',
           fontSize: '0.88rem',
-          fontWeight: 500,
-          transition: 'color 0.2s',
+          fontWeight: 600,
+          transition: 'color 0.15s ease',
         }}
         onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-text)')}
         onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}
@@ -97,68 +80,65 @@ export default function Login() {
       </Link>
 
       <div
-        className="glass animate-slide-up"
+        className="card-editorial animate-slide-up"
         style={{
           width: '100%',
-          maxWidth: '420px',
-          borderRadius: '20px',
-          padding: '2.5rem 2rem',
-          position: 'relative',
-          zIndex: 1,
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.45)',
+          maxWidth: '440px',
+          padding: '2.75rem 2.25rem',
+          boxShadow: '0 12px 40px rgba(56, 26, 22, 0.06)',
         }}
       >
-        {/* Brand Header */}
+        {/* Brand Icon Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div
             style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '13px',
-              background: 'linear-gradient(135deg, #6c63ff, #a78bfa)',
+              width: '48px',
+              height: '48px',
+              borderRadius: '14px',
+              backgroundColor: 'var(--color-accent)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 20px rgba(108, 99, 255, 0.45)',
-              marginBottom: '1rem',
+              boxShadow: '0 6px 16px rgba(240, 68, 56, 0.28)',
+              marginBottom: '1.25rem',
             }}
           >
-            <Wallet size={24} color="#fff" />
+            <ShieldCheck size={26} color="#FFFFFF" strokeWidth={2.3} />
           </div>
           <h1
             style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 800,
-              fontSize: '1.65rem',
+              fontFamily: 'var(--font-serif)',
+              fontSize: '1.85rem',
+              color: 'var(--color-text)',
               margin: '0 0 0.4rem',
-              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
             }}
           >
-            Welcome back
+            Welcome back to your wallet
           </h1>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', margin: 0 }}>
-            Sign in to access your purchase documents
+            Sign in to check your active warranties and receipts
           </p>
         </div>
 
-        {/* Unconfigured notice */}
+        {/* Configuration Notice if Missing */}
         {!isSupabaseConfigured && !errorMsg && (
           <div
             style={{
-              background: 'rgba(251, 191, 36, 0.12)',
-              border: '1px solid rgba(251, 191, 36, 0.35)',
-              borderRadius: '10px',
-              padding: '0.75rem 1rem',
+              backgroundColor: 'var(--color-warning-bg)',
+              border: '1px solid var(--color-warning-border)',
+              borderRadius: '12px',
+              padding: '0.85rem 1rem',
               marginBottom: '1.5rem',
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '0.6rem',
-              color: '#fbbf24',
-              fontSize: '0.83rem',
-              lineHeight: 1.4,
+              gap: '0.65rem',
+              color: 'var(--color-warning)',
+              fontSize: '0.84rem',
+              lineHeight: 1.45,
             }}
           >
-            <AlertCircle size={17} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '2px' }} />
             <span>{supabaseConfigError}</span>
           </div>
         )}
@@ -167,36 +147,36 @@ export default function Login() {
         {errorMsg && (
           <div
             style={{
-              background: 'rgba(248, 113, 113, 0.12)',
-              border: '1px solid rgba(248, 113, 113, 0.35)',
-              borderRadius: '10px',
-              padding: '0.75rem 1rem',
+              backgroundColor: 'var(--color-danger-bg)',
+              border: '1px solid var(--color-danger-border)',
+              borderRadius: '12px',
+              padding: '0.85rem 1rem',
               marginBottom: '1.5rem',
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '0.6rem',
+              gap: '0.65rem',
               color: 'var(--color-danger)',
-              fontSize: '0.85rem',
-              lineHeight: 1.4,
+              fontSize: '0.84rem',
+              lineHeight: 1.45,
             }}
           >
-            <AlertCircle size={17} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '2px' }} />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* Sign In Form */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-          {/* Email input */}
+        {/* Login Form */}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {/* Email field */}
           <div>
             <label
               htmlFor="login-email"
               style={{
                 display: 'block',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                marginBottom: '0.45rem',
+                fontSize: '0.83rem',
+                fontWeight: 700,
                 color: 'var(--color-text)',
+                marginBottom: '0.45rem',
               }}
             >
               Email address
@@ -206,7 +186,7 @@ export default function Login() {
                 size={16}
                 style={{
                   position: 'absolute',
-                  left: '0.85rem',
+                  left: '0.9rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: 'var(--color-muted)',
@@ -218,35 +198,23 @@ export default function Login() {
                 type="email"
                 required
                 autoComplete="email"
+                placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                style={{
-                  width: '100%',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: '10px',
-                  padding: '0.7rem 0.85rem 0.7rem 2.4rem',
-                  color: 'var(--color-text)',
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s',
-                  fontFamily: 'var(--font-sans)',
-                }}
-                onFocus={(e) => (e.target.style.borderColor = 'var(--color-accent)')}
-                onBlur={(e) => (e.target.style.borderColor = 'var(--color-border)')}
+                className="input-editorial"
+                style={{ paddingLeft: '2.4rem' }}
               />
             </div>
           </div>
 
-          {/* Password input */}
+          {/* Password field */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
               <label
                 htmlFor="login-password"
                 style={{
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
+                  fontSize: '0.83rem',
+                  fontWeight: 700,
                   color: 'var(--color-text)',
                 }}
               >
@@ -258,7 +226,7 @@ export default function Login() {
                 size={16}
                 style={{
                   position: 'absolute',
-                  left: '0.85rem',
+                  left: '0.9rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: 'var(--color-muted)',
@@ -270,27 +238,16 @@ export default function Login() {
                 type={showPassword ? 'text' : 'password'}
                 required
                 autoComplete="current-password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                style={{
-                  width: '100%',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: '10px',
-                  padding: '0.7rem 2.6rem 0.7rem 2.4rem',
-                  color: 'var(--color-text)',
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s',
-                  fontFamily: 'var(--font-sans)',
-                }}
-                onFocus={(e) => (e.target.style.borderColor = 'var(--color-accent)')}
-                onBlur={(e) => (e.target.style.borderColor = 'var(--color-border)')}
+                className="input-editorial"
+                style={{ paddingLeft: '2.4rem', paddingRight: '2.4rem' }}
               />
               <button
                 type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label="Toggle password visibility"
                 style={{
                   position: 'absolute',
                   right: '0.75rem',
@@ -298,13 +255,10 @@ export default function Login() {
                   transform: 'translateY(-50%)',
                   background: 'none',
                   border: 'none',
-                  color: 'var(--color-muted)',
                   cursor: 'pointer',
+                  color: 'var(--color-muted)',
                   padding: '0.2rem',
-                  display: 'flex',
-                  alignItems: 'center',
                 }}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -314,50 +268,32 @@ export default function Login() {
           {/* Submit Button */}
           <button
             type="submit"
-            id="login-submit-btn"
             disabled={submitting}
-            className="btn-primary"
-            style={{
-              width: '100%',
-              marginTop: '0.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              opacity: submitting ? 0.75 : 1,
-              cursor: submitting ? 'not-allowed' : 'pointer',
-            }}
+            className="btn-coral"
+            style={{ width: '100%', marginTop: '0.5rem', padding: '0.8rem' }}
           >
             {submitting ? (
               <>
-                <Loader2 size={18} className="animate-spin" />
-                Signing in...
+                <Loader2 size={18} className="animate-spin" /> Signing in...
               </>
             ) : (
-              'Sign in'
+              'Sign in to Pocket'
             )}
           </button>
         </form>
 
-        {/* Sign up prompt */}
-        <div
-          style={{
-            marginTop: '1.75rem',
-            textAlign: 'center',
-            fontSize: '0.85rem',
-            color: 'var(--color-muted)',
-          }}
-        >
-          Don't have an account?{' '}
+        {/* Footer Link */}
+        <div style={{ textAlign: 'center', marginTop: '1.75rem', fontSize: '0.88rem', color: 'var(--color-muted)' }}>
+          Don't have a pocket yet?{' '}
           <Link
             to="/signup"
             style={{
-              color: 'var(--color-accent2)',
+              color: 'var(--color-accent)',
+              fontWeight: 700,
               textDecoration: 'none',
-              fontWeight: 600,
             }}
           >
-            Sign up
+            Create account
           </Link>
         </div>
       </div>

@@ -1,61 +1,61 @@
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
+import AddProductModal from './AddProductModal'
+import { type ProductRecord } from '../lib/database'
 
-/**
- * Layout — the persistent app shell used for all dashboard pages.
- * Renders: [Sidebar | TopBar + <page content>]
- *
- * The <Outlet /> is where React Router renders the active child page
- * (Dashboard, MyPurchases, Documents, WarrantyTracker).
- */
 export default function Layout() {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+
+  const handleProductAdded = (_newProduct: ProductRecord) => {
+    // Dispatch a custom event so active pages (Dashboard, Purchases, Warranties) can reload
+    window.dispatchEvent(new CustomEvent('proofpocket:product-added'))
+  }
+
   return (
-    <div style={{
-      display:        'flex',
-      minHeight:      '100vh',
-      background:     'var(--color-bg)',
-    }}>
-      <Sidebar />
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: 'var(--color-bg)',
+      }}
+    >
+      {/* ── Left Sidebar ────────────────────────────────────────── */}
+      <Sidebar onOpenAddModal={() => setIsAddModalOpen(true)} />
 
-      {/* Main column */}
-      <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
-        <TopBar />
-        <main style={{
-          flex:       1,
-          padding:    '1.75rem 2rem',
-          overflowY:  'auto',
-        }}>
-          {/* ── MOCK DATA NOTICE ────────────────────────────────────
-              The banner below is visible only in development so you
-              always know you're looking at prototype data, not real
-              Supabase data. It will be removed in Phase 3.
-          ────────────────────────────────────────────────────────── */}
-          <div style={{
-            background:   'rgba(251,191,36,0.08)',
-            border:       '1px solid rgba(251,191,36,0.3)',
-            borderRadius: '8px',
-            padding:      '0.5rem 1rem',
-            marginBottom: '1.5rem',
-            fontSize:     '0.8rem',
-            color:        '#fbbf24',
-            display:      'flex',
-            alignItems:   'center',
-            gap:          '0.5rem',
-          }}>
-            <span>⚡</span>
-            <span>
-              <strong>Prototype mode</strong> — all data below is sample data from{' '}
-              <code style={{ fontSize:'0.75rem', background:'rgba(251,191,36,0.1)', padding:'0 4px', borderRadius:3 }}>
-                src/data/mockData.ts
-              </code>
-              . Real backend connects in Phase 3.
-            </span>
-          </div>
+      {/* ── Main Content Area ───────────────────────────────────── */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minWidth: 0,
+        }}
+      >
+        {/* Top bar header */}
+        <TopBar onOpenAddModal={() => setIsAddModalOpen(true)} />
 
+        {/* Page Content */}
+        <main
+          style={{
+            flex: 1,
+            padding: '2rem 2.25rem',
+            maxWidth: '1380px',
+            width: '100%',
+            margin: '0 auto',
+          }}
+        >
           <Outlet />
         </main>
       </div>
+
+      {/* Global Add Product & Warranty Modal */}
+      <AddProductModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={handleProductAdded}
+      />
     </div>
   )
 }

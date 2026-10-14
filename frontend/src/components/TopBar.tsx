@@ -1,29 +1,30 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Search, Bell, Plus, LogOut } from 'lucide-react'
+import { Plus, LogOut } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
-const PAGE_TITLES: Record<string, string> = {
-  '/app/dashboard': 'Dashboard',
-  '/app/purchases': 'My Purchases',
-  '/app/documents': 'Documents',
-  '/app/warranty': 'Warranty Tracker',
-  '/app/upload': 'Upload Document',
-  '/app/settings': 'Settings',
+interface TopBarProps {
+  onOpenAddModal?: () => void
 }
 
-export default function TopBar() {
+const PAGE_TITLES: Record<string, string> = {
+  '/app/dashboard': 'Warranty Dashboard',
+  '/app/purchases': 'My Purchases',
+  '/app/documents': 'Saved Documents',
+  '/app/warranty': 'Warranty Tracker',
+  '/app/settings': 'Settings & Profile',
+}
+
+export default function TopBar({ onOpenAddModal }: TopBarProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const { user, signOut } = useAuth()
-  const [query, setQuery] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   const title =
     Object.entries(PAGE_TITLES).find(([path]) => location.pathname.startsWith(path))?.[1] ?? 'ProofPocket AI'
 
-  // Close menu on click outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -34,7 +35,6 @@ export default function TopBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Derive display initials and name
   const fullName = (user?.user_metadata?.full_name as string) || ''
   const email = user?.email || ''
   const displayName = fullName || email.split('@')[0] || 'User'
@@ -56,196 +56,120 @@ export default function TopBar() {
   return (
     <header
       style={{
-        height: '60px',
-        background: 'rgba(18,20,28,0.8)',
-        backdropFilter: 'blur(12px)',
+        height: '68px',
+        backgroundColor: 'rgba(247, 243, 233, 0.94)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid var(--color-border)',
-        padding: '0 1.5rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '1rem',
+        padding: '0 2rem',
         position: 'sticky',
         top: 0,
         zIndex: 40,
       }}
     >
-      {/* Page title */}
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '1.1rem',
-          fontWeight: 700,
-          margin: 0,
-          flexShrink: 0,
-        }}
-      >
-        {title}
-      </h1>
-
-      {/* Search bar */}
-      <div
-        style={{
-          flex: 1,
-          maxWidth: '400px',
-          position: 'relative',
-        }}
-      >
-        <Search
-          size={15}
+      {/* Page Title */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <h1
           style={{
-            position: 'absolute',
-            left: '0.75rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: 'var(--color-muted)',
-            pointerEvents: 'none',
-          }}
-        />
-        <input
-          id="topbar-search"
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search documents, merchants…"
-          style={{
-            width: '100%',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid var(--color-border)',
-            borderRadius: '8px',
-            padding: '0.45rem 0.75rem 0.45rem 2.2rem',
+            fontFamily: 'var(--font-serif)',
+            fontSize: '1.45rem',
             color: 'var(--color-text)',
-            fontSize: '0.85rem',
-            outline: 'none',
-            transition: 'border-color 0.2s',
-            fontFamily: 'var(--font-sans)',
+            margin: 0,
+            lineHeight: 1,
+            fontWeight: 400,
           }}
-          onFocus={(e) => (e.target.style.borderColor = '#6c63ff')}
-          onBlur={(e) => (e.target.style.borderColor = 'var(--color-border)')}
-        />
+        >
+          {title}
+        </h1>
+        <span className="pill-badge pill-coral" style={{ fontSize: '0.68rem', padding: '0.2rem 0.55rem' }}>
+          Live Pocket
+        </span>
       </div>
 
-      {/* Right side actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-        {/* Upload CTA */}
+      {/* Right Side Actions */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {/* + Add Product Primary Action */}
         <button
-          id="topbar-upload-btn"
-          className="btn-primary"
-          style={{ padding: '0.45rem 1rem', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+          onClick={onOpenAddModal}
+          className="btn-coral"
+          style={{ fontSize: '0.84rem', padding: '0.5rem 1.15rem' }}
         >
-          <Plus size={14} /> Upload
+          <Plus size={16} strokeWidth={2.4} /> Add Product
         </button>
 
-        {/* Bell with badge */}
-        <button
-          id="topbar-bell-btn"
-          style={{
-            position: 'relative',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 8,
-            width: 36,
-            height: 36,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            color: 'var(--color-muted)',
-          }}
-        >
-          <Bell size={17} />
-          {/* 2 warranty alerts badge */}
-          <span
-            style={{
-              position: 'absolute',
-              top: 4,
-              right: 4,
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: '#f87171',
-              border: '2px solid var(--color-surface)',
-            }}
-          />
-        </button>
-
-        {/* Avatar & Dropdown Menu */}
+        {/* User Profile Menu */}
         <div style={{ position: 'relative' }} ref={menuRef}>
           <button
-            id="topbar-avatar-btn"
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Open user menu"
             style={{
-              width: 34,
-              height: 34,
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
-              cursor: 'pointer',
-              background: 'linear-gradient(135deg, #6c63ff, #22d3a1)',
+              backgroundColor: 'var(--color-surface)',
+              border: '1.5px solid var(--color-border-strong)',
+              color: 'var(--color-text)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '0.72rem',
               fontWeight: 700,
-              color: '#fff',
-              border: 'none',
-              boxShadow: menuOpen ? '0 0 12px rgba(108, 99, 255, 0.6)' : 'none',
-              transition: 'box-shadow 0.2s',
+              fontSize: '0.86rem',
+              cursor: 'pointer',
+              boxShadow: '0 2px 6px rgba(56, 26, 22, 0.06)',
             }}
-            title={email}
-            aria-label="User profile menu"
           >
             {initials}
           </button>
 
-          {/* User Menu Dropdown */}
           {menuOpen && (
             <div
-              className="glass"
+              className="card-editorial animate-slide-up"
               style={{
                 position: 'absolute',
-                top: 'calc(100% + 8px)',
                 right: 0,
-                width: '220px',
-                borderRadius: '12px',
-                padding: '0.75rem',
-                boxShadow: '0 12px 32px rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
+                top: 'calc(100% + 8px)',
+                width: '240px',
+                padding: '0.6rem',
                 zIndex: 60,
+                boxShadow: '0 12px 36px rgba(56, 26, 22, 0.12)',
               }}
             >
-              <div style={{ padding: '0.25rem 0.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.6rem' }}>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {displayName}
-                </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--color-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {email}
-                </div>
+              <div
+                style={{
+                  padding: '0.75rem 0.85rem',
+                  borderBottom: '1px solid var(--color-border)',
+                  marginBottom: '0.4rem',
+                }}
+              >
+                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--color-text)' }}>{displayName}</div>
+                <div style={{ fontSize: '0.76rem', color: 'var(--color-muted)', wordBreak: 'break-all' }}>{email}</div>
               </div>
 
               <button
-                id="topbar-signout-btn"
                 onClick={handleSignOut}
                 style={{
+                  width: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 0.6rem',
-                  borderRadius: '8px',
+                  gap: '0.6rem',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '10px',
                   background: 'none',
                   border: 'none',
-                  color: 'var(--color-danger)',
                   cursor: 'pointer',
-                  fontSize: '0.82rem',
-                  fontWeight: 500,
-                  transition: 'background 0.2s',
-                  width: '100%',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: 'var(--color-danger)',
+                  transition: 'background 0.15s ease',
                   textAlign: 'left',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(248, 113, 113, 0.1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--color-danger-bg)')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
-                <LogOut size={15} /> Log out
+                <LogOut size={16} /> Sign out
               </button>
             </div>
           )}

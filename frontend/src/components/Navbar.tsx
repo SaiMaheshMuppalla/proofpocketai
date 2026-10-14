@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Wallet, Menu, X, ArrowRight } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { ShieldCheck, Menu, X, ArrowRight } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
@@ -17,8 +17,9 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'Features', href: '#features' },
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'About', href: '#about' },
+    { label: 'Warranty Tracking', href: '#warranty' },
+    { label: 'How It Works', href: '#how-it-works' },
+    { label: 'Security', href: '#security' },
   ]
 
   return (
@@ -31,10 +32,11 @@ export default function Navbar() {
         right: 0,
         zIndex: 100,
         padding: '0 1.5rem',
-        transition: 'all 0.3s ease',
-        background: scrolled ? 'rgba(10,11,16,0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(42,45,62,0.8)' : 'none',
+        transition: 'all 0.25s ease',
+        backgroundColor: scrolled ? 'rgba(247, 243, 233, 0.94)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--color-border)' : '1px solid transparent',
       }}
     >
       <div
@@ -44,161 +46,183 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: '64px',
+          height: '70px',
         }}
       >
-        {/* Logo */}
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
+        {/* Brand Logo */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', textDecoration: 'none' }}>
           <div
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg,#6c63ff,#a78bfa)',
+              width: '38px',
+              height: '38px',
+              borderRadius: '11px',
+              backgroundColor: 'var(--color-accent)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(108,99,255,0.5)',
+              boxShadow: '0 4px 12px rgba(240, 68, 56, 0.28)',
             }}
           >
-            <Wallet size={20} color="#fff" />
+            <ShieldCheck size={20} color="#FFFFFF" strokeWidth={2.4} />
           </div>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.15rem', color: 'var(--color-text)' }}>
-            Proof<span className="gradient-text">Pocket</span>
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 800,
+              fontSize: '1.22rem',
+              color: 'var(--color-text)',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            ProofPocket<span style={{ color: 'var(--color-accent)' }}>.ai</span>
           </span>
-        </a>
+        </Link>
 
-        {/* Desktop links */}
-        <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }} className="desktop-nav">
-          {navLinks.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                style={{
-                  color: 'var(--color-muted)',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-text)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}
-              >
-                {l.label}
-              </a>
-            </li>
+        {/* Desktop Nav Links */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
+          }}
+          className="hidden md:flex"
+        >
+          {navLinks.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.88rem',
+                fontWeight: 600,
+                color: 'var(--color-muted)',
+                textDecoration: 'none',
+                transition: 'color 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-text)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}
+            >
+              {item.label}
+            </a>
           ))}
-        </ul>
+        </div>
 
-        {/* CTA */}
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }} className="hidden md:flex">
           {user ? (
             <button
-              id="navbar-dashboard-btn"
               onClick={() => navigate('/app/dashboard')}
-              className="btn-primary"
-              style={{
-                padding: '0.5rem 1.25rem',
-                fontSize: '0.875rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
+              className="btn-coral"
+              style={{ fontSize: '0.88rem', padding: '0.55rem 1.25rem' }}
             >
-              Go to Dashboard <ArrowRight size={14} />
+              Open Dashboard <ArrowRight size={16} />
             </button>
           ) : (
             <>
               <button
-                id="navbar-signin-btn"
                 onClick={() => navigate('/login')}
-                className="btn-outline"
-                style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}
+                className="btn-editorial-ghost"
+                style={{ fontSize: '0.88rem', padding: '0.55rem 1.1rem' }}
               >
                 Sign in
               </button>
               <button
-                id="navbar-signup-btn"
                 onClick={() => navigate('/signup')}
-                className="btn-primary"
-                style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}
+                className="btn-coral"
+                style={{ fontSize: '0.88rem', padding: '0.55rem 1.25rem' }}
               >
-                Get started
+                Get Started Free
               </button>
             </>
           )}
-
-          {/* Hamburger (mobile) */}
-          <button
-            id="mobile-menu-btn"
-            onClick={() => setMenuOpen((o) => !o)}
-            style={{ background: 'none', border: 'none', color: 'var(--color-text)', cursor: 'pointer', display: 'none' }}
-            className="mobile-menu-btn"
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation menu"
+          className="md:hidden"
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: '0.4rem',
+            cursor: 'pointer',
+            color: 'var(--color-text)',
+          }}
+        >
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile Drawer */}
       {menuOpen && (
-        <div className="glass" style={{ borderRadius: '12px', margin: '0.5rem 0 1rem', padding: '1rem' }}>
-          {navLinks.map((l) => (
+        <div
+          className="md:hidden animate-slide-up"
+          style={{
+            backgroundColor: 'var(--color-surface)',
+            borderBottom: '1px solid var(--color-border)',
+            padding: '1.25rem 1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            boxShadow: '0 12px 30px rgba(56, 26, 22, 0.08)',
+          }}
+        >
+          {navLinks.map((item) => (
             <a
-              key={l.href}
-              href={l.href}
+              key={item.label}
+              href={item.href}
               onClick={() => setMenuOpen(false)}
-              style={{ display: 'block', padding: '0.6rem 0.5rem', color: 'var(--color-text)', textDecoration: 'none', fontWeight: 500 }}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '0.95rem',
+                fontWeight: 600,
+                color: 'var(--color-text)',
+                textDecoration: 'none',
+                padding: '0.4rem 0',
+              }}
             >
-              {l.label}
+              {item.label}
             </a>
           ))}
-          <div style={{ borderTop: '1px solid var(--color-border)', marginTop: '0.75rem', paddingTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {user ? (
+          <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.25rem 0' }} />
+          {user ? (
+            <button
+              onClick={() => {
+                setMenuOpen(false)
+                navigate('/app/dashboard')
+              }}
+              className="btn-coral"
+              style={{ width: '100%' }}
+            >
+              Go to Dashboard
+            </button>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               <button
                 onClick={() => {
                   setMenuOpen(false)
-                  navigate('/app/dashboard')
+                  navigate('/login')
                 }}
-                className="btn-primary"
-                style={{ width: '100%', padding: '0.6rem', fontSize: '0.88rem' }}
+                className="btn-editorial-ghost"
+                style={{ width: '100%' }}
               >
-                Go to Dashboard
+                Sign in
               </button>
-            ) : (
-              <>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false)
-                    navigate('/login')
-                  }}
-                  className="btn-outline"
-                  style={{ width: '100%', padding: '0.6rem', fontSize: '0.88rem' }}
-                >
-                  Sign in
-                </button>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false)
-                    navigate('/signup')
-                  }}
-                  className="btn-primary"
-                  style={{ width: '100%', padding: '0.6rem', fontSize: '0.88rem' }}
-                >
-                  Get started
-                </button>
-              </>
-            )}
-          </div>
+              <button
+                onClick={() => {
+                  setMenuOpen(false)
+                  navigate('/signup')
+                }}
+                className="btn-coral"
+                style={{ width: '100%' }}
+              >
+                Get Started Free
+              </button>
+            </div>
+          )}
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: block !important; }
-        }
-      `}</style>
     </nav>
   )
 }
