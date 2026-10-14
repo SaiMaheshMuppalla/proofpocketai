@@ -6,14 +6,49 @@ Real endpoints (upload, extract, auth) come in Phase 3-4.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
+from fastapi.openapi.docs import get_swagger_ui_html
+from starlette.types import ASGIApp, Scope, Receive, Send
+from datetime import datetime, timezone
 import os
 
 app = FastAPI(
     title="ProofPocket AI API",
     description="Purchase-document wallet backend powered by FastAPI + Supabase",
     version="0.1.0",
+    redirect_slashes=False,
+    docs_url="/docs",
+    openapi_url="/openapi.json",
 )
+
+
+# ── Vercel Path Correction Middleware ───────────────────────────
+class VercelPathMiddleware:
+    """
+    Ensures that when Vercel routes rewrites internally, the original
+    requested path is preserved in ASGI scope if Vercel sets the scope
+    path to the entrypoint filename.
+    """
+    def __init__(self, asgi_app: ASGIApp):
+        self.asgi_app = asgi_app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send):
+        if scope.get("type") == "http":
+            current_path = scope.get("path", "")
+            if current_path in ("/api/index", "/api/index.py", "/index.py"):
+                headers = dict(scope.get("headers", []))
+                matched = headers.get(b"x-matched-path") or headers.get(b"x-forwarded-uri")
+                if matched:
+                    try:
+                        decoded = matched.decode("utf-8").split("?")[0]
+                        if decoded and not decoded.startswith(("/api/index", "/index.py")):
+                            scope["path"] = decoded
+                    except Exception:
+                        pass
+        await self.asgi_app(scope, receive, send)
+
+
+app.add_middleware(VercelPathMiddleware)
+
 
 # ── CORS ────────────────────────────────────────────────────────
 # In local dev: allows Vite dev server (localhost:5173).
@@ -38,6 +73,20 @@ app.add_middleware(
 )
 
 
+# ── Documentation routes ────────────────────────────────────────
+
+@app.get("/api/docs", include_in_schema=False)
+def api_docs():
+    """Alternative docs endpoint under /api prefix."""
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title="ProofPocket AI API - Documentation")
+
+
+@app.get("/api/openapi.json", include_in_schema=False)
+def api_openapi():
+    """Alternative OpenAPI schema under /api prefix."""
+    return app.openapi()
+
+
 # ── Routes ──────────────────────────────────────────────────────
 
 @app.get("/", tags=["root"])
@@ -57,7 +106,7 @@ def health():
     """Health check — used by the frontend and load balancers."""
     return {
         "status":    "ok",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "version":   "0.1.0",
     }
 

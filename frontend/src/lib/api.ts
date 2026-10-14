@@ -24,9 +24,48 @@ export interface HealthCheckResponse {
   version?: string
 }
 
+export interface DocumentsResponse {
+  documents: unknown[]
+  total: number
+}
+
+/**
+ * Checks the FastAPI backend health status.
+ * Hits either same-origin `/health` in production or localhost:8000/health in dev.
+ */
 export async function checkBackendHealth(): Promise<{ success: boolean; data?: HealthCheckResponse; error?: string }> {
   try {
     const res = await fetch(`${API_BASE_URL}/health`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+
+    if (!res.ok) {
+      return {
+        success: false,
+        error: `Backend responded with HTTP status ${res.status}`,
+      }
+    }
+
+    const data = await res.json()
+    return { success: true, data }
+  } catch (err: unknown) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    }
+  }
+}
+
+/**
+ * Fetches user documents from FastAPI backend.
+ * Phase 3 endpoint.
+ */
+export async function fetchDocuments(): Promise<{ success: boolean; data?: DocumentsResponse; error?: string }> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/v1/documents`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

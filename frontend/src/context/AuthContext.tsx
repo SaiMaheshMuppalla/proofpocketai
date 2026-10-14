@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { User, Session, AuthError } from '@supabase/supabase-js'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { supabase, isSupabaseConfigured, supabaseConfigError } from '../lib/supabase'
 
 interface AuthContextType {
   user: User | null
@@ -24,6 +24,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let isMounted = true
+
+    if (!isSupabaseConfigured) {
+      setLoading(false)
+      return
+    }
 
     // Fetch initial session on app mount
     supabase.auth
@@ -63,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isSupabaseConfigured) {
       return {
         error: new Error(
+          supabaseConfigError ||
           'Supabase environment variables (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY) are missing in this deployment. Please set them in your hosting provider settings.'
         ),
       }
@@ -82,6 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isSupabaseConfigured) {
       return {
         error: new Error(
+          supabaseConfigError ||
           'Supabase environment variables (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY) are missing in this deployment. Please set them in your hosting provider settings.'
         ),
         user: null,
@@ -89,6 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
     try {
+      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/login` : undefined
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
@@ -96,6 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           data: {
             full_name: fullName?.trim() || undefined,
           },
+          emailRedirectTo: redirectUrl,
         },
       })
       return { error, user: data.user, session: data.session }
@@ -109,6 +118,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signOut = async () => {
+    if (!isSupabaseConfigured) {
+      setUser(null)
+      setSession(null)
+      return { error: null }
+    }
     try {
       const { error } = await supabase.auth.signOut()
       return { error }

@@ -2,28 +2,26 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { supabase } from './lib/supabase'
+import { isSupabaseConfigured, testSupabaseConnection } from './lib/supabase'
 
-// ─── Temporary Supabase connection diagnostic (console-only) ─────────────────
-supabase
-  .from('purchases')
-  .select('id')
-  .limit(1)
-  .then(
-    ({ data, error, status }) => {
-      if (error) {
-        console.error('[Supabase Test] Query failed on purchases table:', error)
-      } else {
-        console.log(
-          '%c[Supabase Test] Connected successfully! HTTP ' + status + ' OK. (rows returned: ' + (data?.length ?? 0) + ')',
-          'color: #10b981; font-weight: bold; font-size: 13px;'
-        )
-      }
-    },
-    (err: unknown) => {
-      console.error('[Supabase Test] Network error connecting to Supabase:', err)
+// Diagnostic check only when credentials are valid
+if (isSupabaseConfigured) {
+  testSupabaseConnection().then((result) => {
+    if (result.success) {
+      console.log(
+        '%c[Supabase] ' + result.message,
+        'color: #10b981; font-weight: bold; font-size: 13px;'
+      )
+    } else {
+      console.warn('[Supabase] Connection probe notice:', result.message)
     }
+  })
+} else {
+  console.warn(
+    '[ProofPocket AI] Supabase credentials are not configured. ' +
+    'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable authentication.'
   )
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

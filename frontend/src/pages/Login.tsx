@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { isSupabaseConfigured, supabaseConfigError } from '../lib/supabase'
 import { Wallet, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, ArrowLeft } from 'lucide-react'
 
 export default function Login() {
@@ -139,6 +140,28 @@ export default function Login() {
             Sign in to access your purchase documents
           </p>
         </div>
+
+        {/* Unconfigured notice */}
+        {!isSupabaseConfigured && !errorMsg && (
+          <div
+            style={{
+              background: 'rgba(251, 191, 36, 0.12)',
+              border: '1px solid rgba(251, 191, 36, 0.35)',
+              borderRadius: '10px',
+              padding: '0.75rem 1rem',
+              marginBottom: '1.5rem',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '0.6rem',
+              color: '#fbbf24',
+              fontSize: '0.83rem',
+              lineHeight: 1.4,
+            }}
+          >
+            <AlertCircle size={17} style={{ flexShrink: 0, marginTop: '2px' }} />
+            <span>{supabaseConfigError}</span>
+          </div>
+        )}
 
         {/* Error Alert */}
         {errorMsg && (
